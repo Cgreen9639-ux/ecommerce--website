@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask E-Commerce Store</title>
+    <link rel="stylesheet" href="static/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://js.stripe.com/v3/"></script> <!-- For Stripe Integration -->
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="/">Store</a>
+            </div>
+            <div class="nav-links">
+                <a href="/page/1">Home</a>
+                <a href="/cart">Cart</a>
+                <a href="/login">Login</a>
+                <a href="/logout">Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="product-gallery">
+        <div class="container">
+            <h1>Our Products</h1>
+            <div class="product-list">
+                {% for item in items %}
+                    <div class="product-card">
+                        <img src="{{ item.image_url }}" alt="{{ item.name }}">
+                        <h3>{{ item.name }}</h3>
+                        <p>{{ item.price }} USD</p>
+                        <button class="view-details-btn" data-id="{{ item.id }}">View Details</button>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <a href="/page/{{ page_num - 1 }}" class="prev-page">Prev</a>
+                <a href="/page/{{ page_num + 1 }}" class="next-page">Next</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Detail Modal -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="product-name"></h2>
+            <img id="product-image" src="" alt="">
+            <p id="product-description"></p>
+            <p id="product-price"></p>
+            <button id="add-to-cart">Add to Cart</button>
+            <button id="checkout">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Cart Preview -->
+    <div id="cart-preview">
+        <p>Your Cart</p>
+        <div id="cart-items"></div>
+        <button onclick="window.location.href='/checkout'">Go to Checkout</button>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Flask E-Commerce Store</p>
+    </footer>
+
+    <script>
+        // Show product details modal
+        $('.view-details-btn').on('click', function() {
+            var productId = $(this).data('id');
+
+            // Fetch product details via AJAX
+            $.ajax({
+                url: '/product/' + productId,
+                method: 'GET',
+                success: function(data) {
+                    $('#product-name').text(data.name);
+                    $('#product-description').text(data.description);
+                    $('#product-price').text(data.price + " USD");
+                    $('#product-image').attr('src', data.image_url);
+
+                    // Open modal
+                    $('#product-modal').fadeIn();
+                }
+            });
+        });
+
+        // Close product details modal
+        $('.close-btn').on('click', function() {
+            $('#product-modal').fadeOut();
+        });
+
+        // Add to Cart functionality
+        $('#add-to-cart').on('click', function() {
+            var productId = $('#product-name').text();
+
+            // Add product to cart (basic version using sessionStorage)
+            var cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+            cart.push(productId);
+            sessionStorage.setItem('cart', JSON.stringify(cart));
+
+            // Close modal
+            $('#product-modal').fadeOut();
+            alert('Item added to your cart');
+        });
+
+        // Checkout Button
+        $('#checkout').on('click', function() {
+            // Redirect to checkout page
+            window.location.href = '/checkout';
+        });
+    </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-- name: Log in to Docker Hub
+- name: Log in to Docker. This should resolve the issue with the missing credentials. Hub
   uses: docker/login-action@v2
   with:
     username: ${{ secrets.DOCKER_USERNAME }}

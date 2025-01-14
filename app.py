@@ -163,6 +163,10 @@ def view_cart():
     # Here, you would retrieve cart items from the session or database
     return render_template('cart.html')
 
+# WSGI entry point for deployment
+def create_app():
+    return app
+
 # Run the app
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

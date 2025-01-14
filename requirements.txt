@@ -2,3 +2,8 @@ fastapi
 starlette
 uvicorn
 django
+flask
+flask_sqlalchemy
+flask_login
+stripe
+paypalrestsdk

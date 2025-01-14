@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      - DATABASE_URL=sqlite:///store.db
+      - STRIPE_SECRET_KEY=your_stripe_secret_key
+      - PAYPAL_CLIENT_ID=your_paypal_client_id
+      - PAYPAL_SECRET=your_paypal_secret

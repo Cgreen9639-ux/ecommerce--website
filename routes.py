@@ -114,3 +114,7 @@ def pay_paypal():
     if payment.create():
         for link in payment.links:
             if link.rel == '
+
+if __name__ == "__main__":
+    app.run
+    

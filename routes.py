@@ -6,6 +6,8 @@ import stripe
 import paypalrestsdk
 from config import Config
 
+app.config.from_object(Config)
+
 # Configure Stripe API
 stripe.api_key = Config.STRIPE_SECRET_KEY
 
@@ -117,4 +119,3 @@ def pay_paypal():
 
 if __name__ == "__main__":
     app.run
-    

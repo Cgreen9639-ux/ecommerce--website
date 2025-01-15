@@ -44,15 +44,15 @@ jobs:
           docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
           heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}
 
-      - name: Deploy to AWS Elastic Beanstalk
+      - name: Deploy to Python Server
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          EB_APP_NAME: ${{ secrets.EB_APP_NAME }}
-          EB_ENV_NAME: ${{ secrets.EB_ENV_NAME }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
         run: |
-          pip install awsebcli
-          eb init -p docker $EB_APP_NAME --region $AWS_REGION
-          eb use $EB_ENV_NAME
-          eb deploy
+          sshpass -p $SERVER_PASSWORD ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP << 'EOF'
+          docker pull ${{ secrets.DOCKER_USERNAME }}/ecommerce-website:latest
+          docker stop ecommerce-website || true
+          docker rm ecommerce-website || true
+          docker run -d -p 80:5000 --name ecommerce-website ${{ secrets.DOCKER_USERNAME }}/ecommerce-website:latest
+          EOF

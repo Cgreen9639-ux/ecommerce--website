@@ -8,3 +8,7 @@ class Config:
     PAYPAL_CLIENT_ID = os.environ.get('PAYPAL_CLIENT_ID') or 'your_paypal_client_id'
     PAYPAL_SECRET = os.environ.get('PAYPAL_SECRET') or 'your_paypal_secret'
     FLASK_ENV = os.environ.get('FLASK_ENV') or 'development'
+    CUSTOM_DOMAIN = os.environ.get('CUSTOM_DOMAIN') or None
+
+    if CUSTOM_DOMAIN:
+        FLASK_ENV = CUSTOM_DOMAIN

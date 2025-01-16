@@ -13,4 +13,7 @@ def home():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    if Config.CUSTOM_DOMAIN:
+        app.run(debug=True, host=Config.CUSTOM_DOMAIN, port=5000)
+    else:
+        app.run(debug=True, host='0.0.0.0', port=5000)

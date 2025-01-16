@@ -27,4 +27,12 @@
     cache: # optional
     # Used to specify the path to a dependency file: package-lock.json, yarn.lock, etc. Supports wildcards or a list of file names for caching multiple dependencies.
     cache-dependency-path: # optional
-          
+
+- name: Configure Custom Domain
+  run: |
+    if [ -n "${{ secrets.CUSTOM_DOMAIN }}" ]; then
+      echo "Configuring custom domain..."
+      heroku domains:add ${{ secrets.CUSTOM_DOMAIN }} --app ${{ secrets.HEROKU_APP_NAME }}
+    else
+      echo "No custom domain provided."
+    fi

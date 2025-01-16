@@ -18,3 +18,10 @@ docker-compose up
 ```
 
 4. The application will be accessible at `http://localhost:5000`.
+
+## Setting up a Custom Domain
+
+1. Purchase a custom domain from a domain registrar (e.g., GoDaddy, Namecheap).
+2. Update the `CUSTOM_DOMAIN` environment variable in the `config.py` file with your custom domain.
+3. Configure your DNS settings to point to the IP address of your server.
+4. Update the deployment configuration to use the custom domain.

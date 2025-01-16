@@ -36,3 +36,9 @@
     else
       echo "No custom domain provided."
     fi
+
+- name: Deploy Code
+  run: |
+    git add .
+    git commit -m "Deploy code"
+    git push origin main

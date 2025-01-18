@@ -1,10 +1,13 @@
 #!/bin/bash
 
-# Add changes to app.py and Dockerfile
-git add app.py Dockerfile
+# Collect static files
+echo "Collecting static files..."
+python manage.py collectstatic --noinput
 
-# Commit the changes with a message
-git commit -m "Update Flask app and Dockerfile to serve static files"
+# Apply database migrations
+echo "Applying database migrations..."
+python manage.py migrate
 
-# Push the changes to the main branch
-git push origin main
+# Start the Django development server
+echo "Starting the server..."
+python manage.py runserver
